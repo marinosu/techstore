@@ -26,18 +26,22 @@ class Database
             $dotenv->load();
         }
 
-        $this->host = $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost';
-        $this->username = $_ENV['DB_USERNAME'] ?? getenv('DB_USERNAME') ?: 'root';
-        $this->password = $_ENV['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ?: '';
-        $this->database = $_ENV['DB_DATABASE'] ?? getenv('DB_DATABASE') ?: 'techstore';
-        $this->port = (int) ($_ENV['DB_PORT'] ?? getenv('DB_PORT') ?: 3306);
+        // Lee primero las variables de Railway (MYSQL*), luego las del .env (DB_*) y si no existen usa los valores por defecto
+        $this->host = $_ENV['MYSQLHOST'] ?? $_ENV['DB_HOST'] ?? getenv('MYSQLHOST') ?: (getenv('DB_HOST') ?: '127.0.0.1');
+        $this->username = $_ENV['MYSQLUSER'] ?? $_ENV['DB_USERNAME'] ?? getenv('MYSQLUSER') ?: (getenv('DB_USERNAME') ?: 'root');
+        $this->password = $_ENV['MYSQLPASSWORD'] ?? $_ENV['DB_PASSWORD'] ?? getenv('MYSQLPASSWORD') ?: (getenv('DB_PASSWORD') ?: '');
+        $this->database = $_ENV['MYSQLDATABASE'] ?? $_ENV['DB_DATABASE'] ?? getenv('MYSQLDATABASE') ?: (getenv('DB_DATABASE') ?: 'techstore');
+        $this->port = (int) ($_ENV['MYSQLPORT'] ?? $_ENV['DB_PORT'] ?? getenv('MYSQLPORT') ?: (getenv('DB_PORT') ?: 3306));
     }
 
     public function connect(): mysqli
     {
         if ($this->connection === null) {
+            // Fuerza la conexión TCP/IP si por alguna razón el host quedó en 'localhost'
+            $host = ($this->host === 'localhost') ? '127.0.0.1' : $this->host;
+
             $this->connection = new mysqli(
-                $this->host,
+                $host,
                 $this->username,
                 $this->password,
                 $this->database,
