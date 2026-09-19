@@ -8,7 +8,6 @@ class Database
     private string $username;
     private string $password;
     private string $database;
-    private int $port;
 
     private ?mysqli $connection = null;
 
@@ -30,7 +29,6 @@ class Database
         $this->username = $_ENV['DB_USERNAME'] ?? getenv('DB_USERNAME') ?: 'root';
         $this->password = $_ENV['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ?: '';
         $this->database = $_ENV['DB_DATABASE'] ?? getenv('DB_DATABASE') ?: 'techstore';
-        $this->port = (int) $_ENV['DB_PORT'] ?? getenv('DB_PORT') ?: 3306;
     }
 
     public function connect(): mysqli
