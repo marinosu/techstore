@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $error = 'Correo o contraseña incorrectos.';
             }
         } catch (Exception $e) {
-            $error = 'Ocurrió un error al iniciar sesión.';
+            $error = 'Ocurrió un error al iniciar sesión.' . $e->getMessage();
         }
     }
 }

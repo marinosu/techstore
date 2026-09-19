@@ -43,7 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $success = 'Usuario registrado correctamente.';
             }
         } catch (Exception $e) {
-            $error = 'Ocurrió un error al registrar el usuario.';
+            $error = 'Ocurrió un error al registrar el usuario.' . $e->getMessage();
         }
     }
 }
