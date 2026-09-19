@@ -8,18 +8,29 @@ class Database
     private string $username;
     private string $password;
     private string $database;
+    private int $port;
 
     private ?mysqli $connection = null;
 
     public function __construct()
     {
-        $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
-        $dotenv->load();
+        /**
+         * Si existe .env, lo cargamos.
+         * En Railway las variables ya vienen
+         * directamente del entorno.
+         */
+        $envFile = __DIR__ . '/../.env';
 
-        $this->host = $_ENV['DB_HOST'];
-        $this->username = $_ENV['DB_USERNAME'];
-        $this->password = $_ENV['DB_PASSWORD'];
-        $this->database = $_ENV['DB_DATABASE'];
+        if (file_exists($envFile)) {
+            $dotenv = Dotenv::createImmutable(__DIR__ . '/../');
+            $dotenv->load();
+        }
+
+        $this->host = $_ENV['DB_HOST'] ?? getenv('DB_HOST') ?: 'localhost';
+        $this->username = $_ENV['DB_USERNAME'] ?? getenv('DB_USERNAME') ?: 'root';
+        $this->password = $_ENV['DB_PASSWORD'] ?? getenv('DB_PASSWORD') ?: '';
+        $this->database = $_ENV['DB_DATABASE'] ?? getenv('DB_DATABASE') ?: 'techstore';
+        $this->port = (int) $_ENV['DB_PORT'] ?? getenv('DB_PORT') ?: 3306;
     }
 
     public function connect(): mysqli
