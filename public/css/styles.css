@@ -1,0 +1,30 @@
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border: none;
+}
+
+.dashboard-card {
+    transition: transform 0.2s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-4px);
+}
+
+.table td,
+.table th {
+    vertical-align: middle;
+}
+
+.form-container {
+    max-width: 700px;
+    margin: 0 auto;
+}
+
+.login-container {
+    max-width: 450px;
+    margin: 50px auto;
+}
